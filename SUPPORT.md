@@ -30,7 +30,7 @@ Want to get in touch with the NGINX development team directly? Try using the rel
 
 ## Contributing
 
-Please see the [contributing guide](https://github.com/nginxinc/docker-nginx/blob/master/CONTRIBUTING.md) for guidelines on how to best contribute to this project.
+Please see the [contributing guide](https://github.com/nginx/docker-nginx/blob/master/CONTRIBUTING.md) for guidelines on how to best contribute to this project.
 
 ## Commercial Support
 

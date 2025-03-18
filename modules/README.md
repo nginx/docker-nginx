@@ -14,7 +14,7 @@ enabled by setting the environment variable `DOCKER_BUILDKIT` to `1`.
 
 If you can not or do not want to use BuildKit, you can use a previous version
 of these files, see for example
-https://github.com/nginxinc/docker-nginx/tree/4bf0763f4977fff7e9648add59e0540088f3ca9f/modules.
+https://github.com/nginx/docker-nginx/tree/4bf0763f4977fff7e9648add59e0540088f3ca9f/modules.
 
 ## Usage
 
@@ -115,7 +115,7 @@ cd myapp
 
 ```
 mkdir my-nginx
-curl -o my-nginx/Dockerfile https://raw.githubusercontent.com/nginxinc/docker-nginx/master/modules/Dockerfile
+curl -o my-nginx/Dockerfile https://raw.githubusercontent.com/nginx/docker-nginx/master/modules/Dockerfile
 ```
 
 3. Create a `docker-compose.yml` file:
@@ -157,7 +157,7 @@ cd myapp-cache
 
 ```
 mkdir my-nginx
-curl -o my-nginx/Dockerfile https://raw.githubusercontent.com/nginxinc/docker-nginx/master/modules/Dockerfile
+curl -o my-nginx/Dockerfile https://raw.githubusercontent.com/nginx/docker-nginx/master/modules/Dockerfile
 mkdir my-nginx/cachepurge
 echo "https://github.com/FRiCKLE/ngx_cache_purge/archive/2.3.tar.gz" > my-nginx/cachepurge/source
 ```

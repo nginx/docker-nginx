@@ -36,10 +36,10 @@ dirCommit() {
 }
 
 cat <<-EOH
-# this file is generated via https://github.com/nginxinc/docker-nginx/blob/$(fileCommit "$self")/$self
+# this file is generated via https://github.com/nginx/docker-nginx/blob/$(fileCommit "$self")/$self
 
-Maintainers: NGINX Docker Maintainers <docker-maint@nginx.com> (@nginxinc)
-GitRepo: https://github.com/nginxinc/docker-nginx.git
+Maintainers: NGINX Docker Maintainers <docker-maint@nginx.com> (@nginx)
+GitRepo: https://github.com/nginx/docker-nginx.git
 EOH
 
 # prints "$2$1$3$1...$N"

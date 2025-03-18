@@ -10,7 +10,7 @@ The following is a set of guidelines for contributing to the Docker NGINX image.
 
 [Code Guidelines](#code-guidelines)
 
-[Code of Conduct](https://github.com/nginxinc/docker-nginx/blob/master/CODE_OF_CONDUCT.md)
+[Code of Conduct](https://github.com/nginx/docker-nginx/blob/master/CODE_OF_CONDUCT.md)
 
 ## Getting Started
 
@@ -20,18 +20,18 @@ Follow our [how to use this image guide](https://hub.docker.com/_/nginx/) to get
 
 ### Report a Bug
 
-To report a bug, open an issue on GitHub with the label `bug` using the available bug report issue template. Please ensure the bug has not already been reported. **If the bug is a potential security vulnerability, please report it using our [security policy](https://github.com/nginxinc/docker-nginx/blob/master/SECURITY.md).**
+To report a bug, open an issue on GitHub with the label `bug` using the available bug report issue template. Please ensure the bug has not already been reported. **If the bug is a potential security vulnerability, please report it using our [security policy](https://github.com/nginx/docker-nginx/blob/master/SECURITY.md).**
 
 ### Suggest a Feature or Enhancement
 
-To suggest a feature or enhancement, please create an issue on GitHub with the label `enhancement` using the available [feature request template](https://github.com/nginxinc/docker-nginx/blob/master/.github/feature_request_template.md). Please ensure the feature or enhancement has not already been suggested.
+To suggest a feature or enhancement, please create an issue on GitHub with the label `enhancement` using the available [feature request template](https://github.com/nginx/docker-nginx/blob/master/.github/feature_request_template.md). Please ensure the feature or enhancement has not already been suggested.
 
 ### Open a Pull Request
 
 - Fork the repo, create a branch, implement your changes, add any relevant tests, submit a PR when your changes are **tested** and ready for review.
-- Fill in [our pull request template](https://github.com/nginxinc/docker-nginx/blob/master/.github/pull_request_template.md).
+- Fill in [our pull request template](https://github.com/nginx/docker-nginx/blob/master/.github/pull_request_template.md).
 
-Note: if you'd like to implement a new feature, please consider creating a [feature request issue](https://github.com/nginxinc/docker-nginx/blob/master/.github/feature_request_template.md) first to start a discussion about the feature.
+Note: if you'd like to implement a new feature, please consider creating a [feature request issue](https://github.com/nginx/docker-nginx/blob/master/.github/feature_request_template.md) first to start a discussion about the feature.
 
 ## Code Guidelines
 
