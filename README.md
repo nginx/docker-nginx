@@ -1,5 +1,8 @@
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Community Support](https://badgen.net/badge/support/community/cyan?icon=awesome)](https://github.com/nginx/docker-nginx/blob/master/SUPPORT.md)
+[![Community Forum](https://img.shields.io/badge/community-forum-009639?logo=discourse&link=https%3A%2F%2Fcommunity.nginx.org)](https://community.nginx.org)
+[![License](https://img.shields.io/badge/License-BSD_2--Clause-blue.svg)](https://opensource.org/license/bsd-2-clause)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](/CODE_OF_CONDUCT.md)
 
 # About this Repo
 
@@ -19,13 +22,13 @@ For outstanding `nginx` image PRs, check [PRs with the "library/nginx" label on 
 
 ## Contributing
 
-Please see the [contributing guide](https://github.com/nginx/docker-nginx/blob/master/CONTRIBUTING.md) for guidelines on how to best contribute to this project.
+Please see the [contributing guide](/CONTRIBUTING.md) for guidelines on how to best contribute to this project.
 
 ## License
 
-[BSD 2-Clause](https://github.com/nginx/docker-nginx/blob/master/LICENSE)
+[BSD 2-Clause](/LICENSE)
 
-&copy; [F5, Inc.](https://www.f5.com/) 2023
+&copy; [F5, Inc.](https://www.f5.com/) 2014-2025
 
 ---
 

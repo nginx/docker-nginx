@@ -1,0 +1,62 @@
+---
+name: 🐛 Bug report
+description: Create a report to help us improve
+labels: bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+
+        Before you continue filling out this report, please take a moment to check that your bug has not been [already reported on GitHub][issue search] 🙌
+
+        Remember to redact any sensitive information such as authentication credentials and/or license keys!
+
+        [issue search]: ../search?q=is%3Aissue&type=issues
+
+  - type: textarea
+    id: overview
+    attributes:
+      label: Bug Overview
+      description: A clear and concise overview of the bug.
+      placeholder: When I do "X" with the NGINX Docker image, "Y" happens instead of "Z".
+    validations:
+      required: true
+
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+      placeholder: When I do "X" with the NGINX Docker image, I expect "Z" to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce the Bug
+      description: Detail the series of steps required to reproduce the bug.
+      placeholder: When I run the Docker NGINX image using [...], the image fails with an error message. If I check the terminal outputs and/or logs, I see the following error info.
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Details
+      description: Please provide details about your environment.
+      value: |
+        - Version/release of Docker and method of installation (e.g. Docker Desktop / Docker Server)
+        - Version of the Docker NGINX image or specific commit: [e.g. 1.4.3/commit hash]
+        - Target deployment platform: [e.g. OpenShift/Kubernetes/Docker Compose/local cluster/etc...]
+        - Target OS: [e.g. RHEL 9/Ubuntu 24.04/etc...]
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here.
+      placeholder: Feel free to add any other context/information/screenshots/etc... that you think might be relevant to this issue in here.
