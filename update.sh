@@ -31,7 +31,7 @@ declare -A njspkg=(
 
 # Current otel versions
 declare -A otel=(
-    [mainline]='0.1.1'
+    [mainline]='0.1.2'
     [stable]='0.1.1'
 )
 

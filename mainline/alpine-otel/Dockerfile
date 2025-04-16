@@ -5,7 +5,7 @@
 #
 FROM nginx:1.27.5-alpine
 
-ENV OTEL_VERSION   0.1.1
+ENV OTEL_VERSION   0.1.2
 
 RUN set -x \
     && apkArch="$(cat /etc/apk/arch)" \

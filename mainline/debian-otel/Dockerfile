@@ -5,7 +5,7 @@
 #
 FROM nginx:1.27.5
 
-ENV OTEL_VERSION     0.1.1
+ENV OTEL_VERSION     0.1.2
 
 RUN set -x; \
     NGINX_GPGKEY_PATH=/etc/apt/keyrings/nginx-archive-keyring.gpg; \
