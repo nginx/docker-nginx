@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/License-BSD_2--Clause-blue.svg)](https://opensource.org/license/bsd-2-clause)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](/CODE_OF_CONDUCT.md)
 
-# About this Repo
+# About this Repository
 
 ## Maintained by: [the NGINX Docker Maintainers](https://github.com/nginx/docker-nginx)
 
