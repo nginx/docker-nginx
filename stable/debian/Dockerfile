@@ -8,7 +8,7 @@ FROM debian:bookworm-slim
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ENV NGINX_VERSION   1.28.0
-ENV NJS_VERSION     0.8.10
+ENV NJS_VERSION     0.9.1
 ENV NJS_RELEASE     1~bookworm
 ENV PKG_RELEASE     1~bookworm
 ENV DYNPKG_RELEASE  1~bookworm
@@ -74,10 +74,10 @@ RUN set -x \
                 xsltproc \
             && ( \
                 cd "$tempDir" \
-                && REVISION="${NGINX_VERSION}-${PKG_RELEASE}" \
+                && REVISION="87ccb478e7dc7118180d877952902577a7799a81" \
                 && REVISION=${REVISION%~*} \
                 && curl -f -L -O https://github.com/nginx/pkg-oss/archive/${REVISION}.tar.gz \
-                && PKGOSSCHECKSUM="517bc18954ccf4efddd51986584ca1f37966833ad342a297e1fe58fd0faf14c5a4dabcb23519dca433878a2927a95d6bea05a6749ee2fa67a33bf24cdc41b1e4 *${REVISION}.tar.gz" \
+                && PKGOSSCHECKSUM="137604f91cdff9e7288a65338c2c5f0c225f05fa86f3eec1ec5b38bb1bd6716d9f44f7cd70915c6c5a896e83853b481a63235aadcc74c4e92056a81ad98dc233 *${REVISION}.tar.gz" \
                 && if [ "$(openssl sha512 -r ${REVISION}.tar.gz)" = "$PKGOSSCHECKSUM" ]; then \
                     echo "pkg-oss tarball checksum verification succeeded!"; \
                 else \
