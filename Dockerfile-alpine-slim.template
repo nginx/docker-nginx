@@ -20,11 +20,11 @@ RUN set -x \
         x86_64|aarch64) \
 # arches officially built by upstream
             set -x \
-            && KEY_SHA512="e09fa32f0a0eab2b879ccbbc4d0e4fb9751486eedda75e35fac65802cc9faa266425edf83e261137a2f4d16281ce2c1a5f4502930fe75154723da014214f0655" \
-            && wget -O /tmp/nginx_signing.rsa.pub https://nginx.org/keys/nginx_signing.rsa.pub \
-            && if echo "$KEY_SHA512 */tmp/nginx_signing.rsa.pub" | sha512sum -c -; then \
+            && KEY_SHA512="2c56abe8522b5f930ca35cf9e0d2f58e796b779661f7a32cc5a49b46ddf68a86c4edbaba028b9a105e3adb20f91cc6a88811514ba6d2d68769e7bf9b20ba96d0" \
+            && wget -O /tmp/nginx_signing.key https://nginx.org/keys/nginx_signing.key \
+            && if echo "$KEY_SHA512 */tmp/nginx_signing.key" | sha512sum -c -; then \
                 echo "key verification succeeded!"; \
-                mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/; \
+                mv /tmp/nginx_signing.key /etc/apk/keys/; \
             else \
                 echo "key verification failed!"; \
                 exit 1; \
