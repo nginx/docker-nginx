@@ -3,15 +3,15 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ENV NGINX_VERSION   1.29.1
 ENV NJS_VERSION     0.9.1
-ENV NJS_RELEASE     1~bookworm
-ENV PKG_RELEASE     1~bookworm
-ENV DYNPKG_RELEASE  1~bookworm
+ENV NJS_RELEASE     1~trixie
+ENV PKG_RELEASE     1~trixie
+ENV DYNPKG_RELEASE  1~trixie
 
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
@@ -48,7 +48,7 @@ RUN set -x \
     && case "$dpkgArch" in \
         amd64|arm64) \
 # arches officialy built by upstream
-            echo "deb [signed-by=$NGINX_GPGKEY_PATH] https://nginx.org/packages/mainline/debian/ bookworm nginx" >> /etc/apt/sources.list.d/nginx.list \
+            echo "deb [signed-by=$NGINX_GPGKEY_PATH] https://nginx.org/packages/mainline/debian/ trixie nginx" >> /etc/apt/sources.list.d/nginx.list \
             && apt-get update \
             ;; \
         *) \
