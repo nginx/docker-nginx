@@ -50,8 +50,8 @@ declare -A dynpkg=(
 )
 
 declare -A debian=(
-    [mainline]='bookworm'
-    [stable]='bookworm'
+    [mainline]='trixie'
+    [stable]='trixie'
 )
 
 declare -A alpine=(
