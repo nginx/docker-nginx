@@ -15,6 +15,7 @@ RUN set -x \
         nginx-module-geoip=${NGINX_VERSION}-r${DYNPKG_RELEASE} \
         nginx-module-image-filter=${NGINX_VERSION}-r${DYNPKG_RELEASE} \
         nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${NJS_RELEASE} \
+        nginx-module-acme=${NGINX_VERSION}.${ACME_VERSION}-r${PKG_RELEASE} \
         nginx-module-otel=${NGINX_VERSION}.${OTEL_VERSION}-r${PKG_RELEASE} \
     " \
 # install prerequisites for public key and pkg-oss checks
@@ -50,16 +51,16 @@ RUN set -x \
             && su nobody -s /bin/sh -c " \
                 export HOME=${tempDir} \
                 && cd ${tempDir} \
-                && curl -f -L -O https://github.com/nginx/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
-                && PKGOSSCHECKSUM=\"517bc18954ccf4efddd51986584ca1f37966833ad342a297e1fe58fd0faf14c5a4dabcb23519dca433878a2927a95d6bea05a6749ee2fa67a33bf24cdc41b1e4 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\" \
-                && if [ \"\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\" = \"\$PKGOSSCHECKSUM\" ]; then \
+                && curl -f -L -O https://github.com/nginx/pkg-oss/archive/37ef58ecfb8d38297af7db05b091c0c656e090f3.tar.gz \
+                && PKGOSSCHECKSUM=\"2c06e917e8c249b853c863e03b09f1d9e32bac2fda0486a81a0a2c7bcc6f57ca25bb3120d2a49a8893b4634f8c768a0700c9d8f3c36a1abca0c10ed622b12a12 *37ef58ecfb8d38297af7db05b091c0c656e090f3.tar.gz\" \
+                && if [ \"\$(openssl sha512 -r 37ef58ecfb8d38297af7db05b091c0c656e090f3.tar.gz)\" = \"\$PKGOSSCHECKSUM\" ]; then \
                     echo \"pkg-oss tarball checksum verification succeeded!\"; \
                 else \
                     echo \"pkg-oss tarball checksum verification failed!\"; \
                     exit 1; \
                 fi \
-                && tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
-                && cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE} \
+                && tar xzvf 37ef58ecfb8d38297af7db05b091c0c656e090f3.tar.gz \
+                && cd pkg-oss-37ef58ecfb8d38297af7db05b091c0c656e090f3 \
                 && cd alpine \
                 && make module-otel \
                 && apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
