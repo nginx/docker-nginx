@@ -15,6 +15,7 @@ RUN set -x \
         nginx-module-geoip=${NGINX_VERSION}-r${DYNPKG_RELEASE} \
         nginx-module-image-filter=${NGINX_VERSION}-r${DYNPKG_RELEASE} \
         nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${NJS_RELEASE} \
+        nginx-module-acme=${NGINX_VERSION}.${ACME_VERSION}-r${PKG_RELEASE} \
         nginx-module-otel=${NGINX_VERSION}.${OTEL_VERSION}-r${PKG_RELEASE} \
     " \
 # install prerequisites for public key and pkg-oss checks
