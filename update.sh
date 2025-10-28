@@ -35,6 +35,12 @@ declare -A otel=(
     [stable]='0.1.2'
 )
 
+# Current acme versions
+declare -A acme=(
+    [mainline]='0.3.1'
+    [stable]='0.3.1'
+)
+
 # Current nginx package patchlevel version
 # Remember to update pkgosschecksum when changing this.
 declare -A pkg=(
@@ -122,7 +128,10 @@ get_packages() {
             echo -n '        '"$p"'=${NGINX_VERSION}-'"$r"'${DYNPKG_RELEASE} \\\n'
         done
         for p in nginx-module-njs; do
-            echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${NJS_VERSION}-'"$r"'${NJS_RELEASE} \\'"$bn"
+            echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${NJS_VERSION}-'"$r"'${NJS_RELEASE} \\\n'
+        done
+        for p in nginx-module-acme; do
+            echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${ACME_VERSION}-'"$r"'${PKG_RELEASE} \\'"$bn"
         done
         for p in $otel; do
             echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${OTEL_VERSION}-'"$r"'${PKG_RELEASE} \\'
@@ -180,10 +189,10 @@ get_buildtarget() {
             echo base
             ;;
         alpine)
-            echo module-geoip module-image-filter module-njs module-xslt
+            echo module-geoip module-image-filter module-njs module-xslt module-acme
             ;;
         debian)
-            echo base module-geoip module-image-filter module-njs module-xslt
+            echo base module-geoip module-image-filter module-njs module-xslt module-acme
             ;;
         *-perl)
             echo module-perl
@@ -225,6 +234,7 @@ for branch in "${branches[@]}"; do
         nginxver="${nginx[$branch]}"
         njsver="${njs[${branch}]}"
         otelver="${otel[${branch}]}"
+        acmever="${acme[${branch}]}"
         revver="${rev[${branch}]}"
         pkgosschecksumver="${pkgosschecksum[${branch}]}"
 
@@ -243,6 +253,7 @@ for branch in "${branches[@]}"; do
             -e 's,%%NJS_VERSION%%,'"$njsver"',' \
             -e 's,%%NJS_RELEASE%%,'"$njspkgver"',' \
             -e 's,%%OTEL_VERSION%%,'"$otelver"',' \
+            -e 's,%%ACME_VERSION%%,'"$acmever"',' \
             -e 's,%%PKG_RELEASE%%,'"$packagever"',' \
             -e 's,%%PACKAGES%%,'"$packages"',' \
             -e 's,%%PACKAGEREPO%%,'"$packagerepo"',' \
