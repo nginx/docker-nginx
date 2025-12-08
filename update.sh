@@ -19,7 +19,7 @@ declare -A nginx=(
 # Current njs versions
 declare -A njs=(
     [mainline]='0.9.4'
-    [stable]='0.8.10'
+    [stable]='0.9.4'
 )
 
 # Current njs patchlevel version
@@ -33,6 +33,12 @@ declare -A njspkg=(
 declare -A otel=(
     [mainline]='0.1.2'
     [stable]='0.1.2'
+)
+
+# Current acme versions
+declare -A acme=(
+    [mainline]='0.2.0'
+    [stable]='0.2.0'
 )
 
 # Current nginx package patchlevel version
@@ -51,12 +57,12 @@ declare -A dynpkg=(
 
 declare -A debian=(
     [mainline]='trixie'
-    [stable]='bookworm'
+    [stable]='trixie'
 )
 
 declare -A alpine=(
     [mainline]='3.22'
-    [stable]='3.21'
+    [stable]='3.22'
 )
 
 # When we bump njs version in a stable release we don't move the tag in the
@@ -65,7 +71,7 @@ declare -A alpine=(
 # Remember to update pkgosschecksum when changing this.
 declare -A rev=(
     [mainline]='${NGINX_VERSION}-${PKG_RELEASE}'
-    [stable]='${NGINX_VERSION}-${PKG_RELEASE}'
+    [stable]='37ef58ecfb8d38297af7db05b091c0c656e090f3'
 )
 
 # Holds SHA512 checksum for the pkg-oss tarball produced by source code
@@ -73,7 +79,7 @@ declare -A rev=(
 # Used in builds for architectures not packaged by nginx.org
 declare -A pkgosschecksum=(
     [mainline]='249858446828ace0c81ea3e057135aa368f3dab83430cf867bb9fc32598948f29c4bd50908491da704536af1106aa87553f6a76cc126c6833dc9b14dd00564b8'
-    [stable]='517bc18954ccf4efddd51986584ca1f37966833ad342a297e1fe58fd0faf14c5a4dabcb23519dca433878a2927a95d6bea05a6749ee2fa67a33bf24cdc41b1e4'
+    [stable]='2c06e917e8c249b853c863e03b09f1d9e32bac2fda0486a81a0a2c7bcc6f57ca25bb3120d2a49a8893b4634f8c768a0700c9d8f3c36a1abca0c10ed622b12a12'
 )
 
 get_packages() {
@@ -122,7 +128,10 @@ get_packages() {
             echo -n '        '"$p"'=${NGINX_VERSION}-'"$r"'${DYNPKG_RELEASE} \\\n'
         done
         for p in nginx-module-njs; do
-            echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${NJS_VERSION}-'"$r"'${NJS_RELEASE} \\'"$bn"
+            echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${NJS_VERSION}-'"$r"'${NJS_RELEASE} \\\n'
+        done
+        for p in nginx-module-acme; do
+            echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${ACME_VERSION}-'"$r"'${PKG_RELEASE} \\'"$bn"
         done
         for p in $otel; do
             echo -n '        '"$p"'=${NGINX_VERSION}'"$sep"'${OTEL_VERSION}-'"$r"'${PKG_RELEASE} \\'
@@ -180,10 +189,10 @@ get_buildtarget() {
             echo base
             ;;
         alpine)
-            echo module-geoip module-image-filter module-njs module-xslt
+            echo module-geoip module-image-filter module-njs module-xslt module-acme
             ;;
         debian)
-            echo base module-geoip module-image-filter module-njs module-xslt
+            echo base module-geoip module-image-filter module-njs module-xslt module-acme
             ;;
         *-perl)
             echo module-perl
@@ -225,6 +234,7 @@ for branch in "${branches[@]}"; do
         nginxver="${nginx[$branch]}"
         njsver="${njs[${branch}]}"
         otelver="${otel[${branch}]}"
+        acmever="${acme[${branch}]}"
         revver="${rev[${branch}]}"
         pkgosschecksumver="${pkgosschecksum[${branch}]}"
 
@@ -243,6 +253,7 @@ for branch in "${branches[@]}"; do
             -e 's,%%NJS_VERSION%%,'"$njsver"',' \
             -e 's,%%NJS_RELEASE%%,'"$njspkgver"',' \
             -e 's,%%OTEL_VERSION%%,'"$otelver"',' \
+            -e 's,%%ACME_VERSION%%,'"$acmever"',' \
             -e 's,%%PKG_RELEASE%%,'"$packagever"',' \
             -e 's,%%PACKAGES%%,'"$packages"',' \
             -e 's,%%PACKAGEREPO%%,'"$packagerepo"',' \

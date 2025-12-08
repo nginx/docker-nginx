@@ -2,6 +2,7 @@ FROM nginx:%%NGINX_VERSION%%-alpine-slim
 
 ENV NJS_VERSION   %%NJS_VERSION%%
 ENV NJS_RELEASE   %%NJS_RELEASE%%
+ENV ACME_VERSION  %%ACME_VERSION%%
 
 RUN set -x \
     && apkArch="$(cat /etc/apk/arch)" \
@@ -37,6 +38,8 @@ RUN set -x \
                 alpine-sdk \
                 findutils \
                 curl \
+                cargo \
+                clang-libclang \
             && su nobody -s /bin/sh -c " \
                 export HOME=${tempDir} \
                 && cd ${tempDir} \
