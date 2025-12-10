@@ -6,6 +6,7 @@
 FROM debian:bookworm-slim
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
+LABEL org.opencontainers.image.source="https://github.com/nginx/nginx"
 
 ENV NGINX_VERSION   1.28.0
 ENV NJS_VERSION     0.8.10

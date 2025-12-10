@@ -5,6 +5,8 @@
 #
 FROM nginx:1.28.0-alpine-slim
 
+LABEL org.opencontainers.image.source="https://github.com/nginx/nginx"
+
 ENV NJS_VERSION   0.8.10
 ENV NJS_RELEASE   1
 

@@ -5,6 +5,8 @@
 #
 FROM nginx:1.28.0
 
+LABEL org.opencontainers.image.source="https://github.com/nginx/nginx"
+
 RUN set -x; \
     NGINX_GPGKEY_PATH=/etc/apt/keyrings/nginx-archive-keyring.gpg; \
     dpkgArch="$(dpkg --print-architecture)" \

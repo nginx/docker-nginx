@@ -70,6 +70,7 @@ RUN apt-get update \
     && echo "BUILT_MODULES=\"$BUILT_MODULES\"" > /tmp/packages/modules.env
 
 FROM ${NGINX_FROM_IMAGE}
+LABEL org.opencontainers.image.source="https://github.com/nginx/nginx"
 RUN --mount=type=bind,target=/tmp/packages/,source=/tmp/packages/,from=builder \
     apt-get update \
     && . /tmp/packages/modules.env \

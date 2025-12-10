@@ -5,6 +5,8 @@
 #
 FROM nginx:1.29.4
 
+LABEL org.opencontainers.image.source="https://github.com/nginx/nginx"
+
 ENV OTEL_VERSION     0.1.2
 
 RUN set -x; \
