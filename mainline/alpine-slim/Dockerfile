@@ -6,6 +6,7 @@
 FROM alpine:3.23
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
+LABEL org.opencontainers.image.source="https://github.com/nginx/nginx"
 
 ENV NGINX_VERSION  1.29.4
 ENV PKG_RELEASE    1

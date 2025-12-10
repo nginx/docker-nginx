@@ -1,5 +1,7 @@
 FROM nginx:%%NGINX_VERSION%%-alpine-slim
 
+LABEL org.opencontainers.image.source="https://github.com/nginx/nginx"
+
 ENV NJS_VERSION   %%NJS_VERSION%%
 ENV NJS_RELEASE   %%NJS_RELEASE%%
 

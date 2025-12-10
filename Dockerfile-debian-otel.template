@@ -1,5 +1,7 @@
 FROM nginx:%%NGINX_VERSION%%
 
+LABEL org.opencontainers.image.source="https://github.com/nginx/nginx"
+
 ENV OTEL_VERSION     %%OTEL_VERSION%%
 
 RUN set -x; \

@@ -5,6 +5,8 @@
 #
 FROM nginx:1.29.4-alpine
 
+LABEL org.opencontainers.image.source="https://github.com/nginx/nginx"
+
 RUN set -x \
     && apkArch="$(cat /etc/apk/arch)" \
     && nginxPackages=" \

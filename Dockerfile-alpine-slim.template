@@ -1,6 +1,7 @@
 FROM alpine:%%ALPINE_VERSION%%
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
+LABEL org.opencontainers.image.source="https://github.com/nginx/nginx"
 
 ENV NGINX_VERSION  %%NGINX_VERSION%%
 ENV PKG_RELEASE    %%PKG_RELEASE%%
