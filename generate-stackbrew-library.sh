@@ -16,7 +16,7 @@ versions=( mainline stable )
 declare -A debian_architectures
 debian_architectures=(
     [mainline]='amd64, arm32v5, arm32v7, arm64v8, i386, ppc64le, riscv64, s390x'
-    [stable]='amd64, arm32v5, arm32v7, arm64v8, i386, mips64le, ppc64le, s390x'
+    [stable]='amd64, arm32v5, arm32v7, arm64v8, i386, ppc64le, riscv64, s390x'
 )
 
 # get the most recent commit which modified any of "$@"

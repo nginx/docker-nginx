@@ -51,12 +51,12 @@ declare -A dynpkg=(
 
 declare -A debian=(
     [mainline]='trixie'
-    [stable]='bookworm'
+    [stable]='trixie'
 )
 
 declare -A alpine=(
     [mainline]='3.23'
-    [stable]='3.21'
+    [stable]='3.23'
 )
 
 # When we bump njs version in a stable release we don't move the tag in the
