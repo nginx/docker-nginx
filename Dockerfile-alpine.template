@@ -66,4 +66,9 @@ RUN set -x \
     && if [ -n "$tempDir" ]; then rm -rf "$tempDir"; fi \
     && if [ -f "/etc/apk/keys/abuild-key.rsa.pub" ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi \
 # Bring in curl and ca-certificates to make registering on DNS SD easier
-    && apk add --no-cache curl ca-certificates
+    && apk add --no-cache curl ca-certificates \
+# Ensure we can run our entrypoint and do it compatible with alpine
+    && apk add --no-cache tini \
+    && ln -s /sbin/tini /usr/bin/tini
+# Add support for manually monitoring files to trigger server reloads
+    && apk add --no-cache inotify-tools
