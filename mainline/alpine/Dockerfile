@@ -7,6 +7,7 @@ FROM nginx:1.29.4-alpine-slim
 
 ENV NJS_VERSION   0.9.4
 ENV NJS_RELEASE   1
+ENV ACME_VERSION  0.3.1
 
 RUN set -x \
     && apkArch="$(cat /etc/apk/arch)" \
@@ -16,6 +17,7 @@ RUN set -x \
         nginx-module-geoip=${NGINX_VERSION}-r${DYNPKG_RELEASE} \
         nginx-module-image-filter=${NGINX_VERSION}-r${DYNPKG_RELEASE} \
         nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${NJS_RELEASE} \
+        nginx-module-acme=${NGINX_VERSION}.${ACME_VERSION}-r${PKG_RELEASE} \
     " \
 # install prerequisites for public key and pkg-oss checks
     && apk add --no-cache --virtual .checksum-deps \
@@ -47,6 +49,8 @@ RUN set -x \
                 alpine-sdk \
                 findutils \
                 curl \
+                cargo \
+                clang-libclang \
             && su nobody -s /bin/sh -c " \
                 export HOME=${tempDir} \
                 && cd ${tempDir} \
@@ -61,7 +65,7 @@ RUN set -x \
                 && tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
                 && cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE} \
                 && cd alpine \
-                && make module-geoip module-image-filter module-njs module-xslt \
+                && make module-geoip module-image-filter module-njs module-xslt module-acme \
                 && apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
                 && abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz \
                 " \

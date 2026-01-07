@@ -10,6 +10,7 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 ENV NGINX_VERSION   1.29.4
 ENV NJS_VERSION     0.9.4
 ENV NJS_RELEASE     1~trixie
+ENV ACME_VERSION    0.3.1
 ENV PKG_RELEASE     1~trixie
 ENV DYNPKG_RELEASE  1~trixie
 
@@ -44,6 +45,7 @@ RUN set -x \
         nginx-module-geoip=${NGINX_VERSION}-${DYNPKG_RELEASE} \
         nginx-module-image-filter=${NGINX_VERSION}-${DYNPKG_RELEASE} \
         nginx-module-njs=${NGINX_VERSION}+${NJS_VERSION}-${NJS_RELEASE} \
+        nginx-module-acme=${NGINX_VERSION}+${ACME_VERSION}-${PKG_RELEASE} \
     " \
     && case "$dpkgArch" in \
         amd64|arm64) \
@@ -65,6 +67,7 @@ RUN set -x \
 # build .deb files from upstream's packaging sources
             && apt-get update \
             && apt-get install --no-install-recommends --no-install-suggests -y \
+                cargo \
                 curl \
                 devscripts \
                 equivs \
@@ -74,6 +77,7 @@ RUN set -x \
                 xsltproc \
             && ( \
                 cd "$tempDir" \
+                && export CARGO_HOME="$tempDir/.cargo" \
                 && REVISION="${NGINX_VERSION}-${PKG_RELEASE}" \
                 && REVISION=${REVISION%~*} \
                 && curl -f -L -O https://github.com/nginx/pkg-oss/archive/${REVISION}.tar.gz \
@@ -87,12 +91,12 @@ RUN set -x \
                 && tar xzvf ${REVISION}.tar.gz \
                 && cd pkg-oss-${REVISION} \
                 && cd debian \
-                && for target in base module-geoip module-image-filter module-njs module-xslt; do \
+                && for target in base module-geoip module-image-filter module-njs module-xslt module-acme; do \
                     make rules-$target; \
                     mk-build-deps --install --tool="apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes" \
                         debuild-$target/nginx-$NGINX_VERSION/debian/control; \
                 done \
-                && make base module-geoip module-image-filter module-njs module-xslt \
+                && make base module-geoip module-image-filter module-njs module-xslt module-acme \
             ) \
 # we don't remove APT lists here because they get re-downloaded and removed later
             \
