@@ -19,6 +19,13 @@ debian_architectures=(
     [stable]='amd64, arm32v5, arm32v7, arm64v8, i386, ppc64le, riscv64, s390x'
 )
 
+declare -A alpine_architectures
+alpine_architectures=(
+	[mainline]='arm64v8, arm32v6, arm32v7, ppc64le, s390x, i386, amd64, riscv64'
+	[stable]='arm64v8, arm32v6, arm32v7, ppc64le, s390x, i386, amd64, riscv64'
+)
+
+
 # get the most recent commit which modified any of "$@"
 fileCommit() {
 	git log -1 --format='format:%H' HEAD -- "$@"
@@ -126,7 +133,7 @@ for version in "${versions[@]}"; do
 		echo
 		cat <<-EOE
 			Tags: $(join ', ' "${variantAliases[@]}")
-			Architectures: arm64v8, arm32v6, arm32v7, ppc64le, s390x, i386, amd64, riscv64
+			Architectures: ${alpine_architectures[$version]}
 			GitCommit: $commit
 			Directory: $version/$variant
 		EOE
