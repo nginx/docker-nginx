@@ -21,8 +21,8 @@ debian_architectures=(
 
 declare -A alpine_architectures
 alpine_architectures=(
-	[mainline]='arm64v8, arm32v6, arm32v7, ppc64le, s390x, i386, amd64, riscv64'
-	[stable]='arm64v8, arm32v6, arm32v7, ppc64le, s390x, i386, amd64, riscv64'
+	[mainline]='arm64v8, arm32v7, ppc64le, s390x, i386, amd64, riscv64'
+	[stable]='arm64v8, arm32v7, ppc64le, s390x, i386, amd64, riscv64'
 )
 
 
