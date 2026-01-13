@@ -54,12 +54,15 @@ RUN set -x \
                 && tar xzvf %%REVISION%%.tar.gz \
                 && cd pkg-oss-%%REVISION%% \
                 && cd alpine \
-                && make %%BUILDTARGET%% \
+                && export BUILDTARGET=\"%%BUILDTARGET%%\" \
+                && if [ \"\$(apk --print-arch)\" = \"armhf\" ]; then BUILDTARGET=\"\$( echo \$BUILDTARGET | sed 's,module-acme,,' )\"; fi \
+                && make \$BUILDTARGET \
                 && apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
                 && abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz \
                 " \
             && cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/ \
             && apk del --no-network .build-deps \
+            && if [ "$apkArch" = "armhf" ]; then nginxPackages="$( echo $nginxPackages | sed 's,nginx-module-acme=.*,,')"; fi \
             && apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages \
             ;; \
     esac \
