@@ -65,12 +65,15 @@ RUN set -x \
                 && tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
                 && cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE} \
                 && cd alpine \
-                && make module-geoip module-image-filter module-njs module-xslt module-acme \
+                && export BUILDTARGET=\"module-geoip module-image-filter module-njs module-xslt module-acme\" \
+                && if [ \"\$(apk --print-arch)\" = \"armhf\" ]; then BUILDTARGET=\"\$( echo \$BUILDTARGET | sed 's,module-acme,,' )\"; fi \
+                && make \$BUILDTARGET \
                 && apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk \
                 && abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz \
                 " \
             && cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/ \
             && apk del --no-network .build-deps \
+            && if [ "$apkArch" = "armhf" ]; then nginxPackages="$( echo $nginxPackages | sed 's,nginx-module-acme=.*,,')"; fi \
             && apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages \
             ;; \
     esac \
