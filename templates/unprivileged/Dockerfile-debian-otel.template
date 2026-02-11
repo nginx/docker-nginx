@@ -1,0 +1,97 @@
+ARG IMAGE=nginxinc/nginx-unprivileged:%%NGINX_VERSION%%
+FROM $IMAGE
+
+ENV OTEL_VERSION=%%OTEL_VERSION%%
+
+ARG UID=101
+ARG GID=101
+
+USER root
+
+RUN set -x; \
+    NGINX_GPGKEY_PATH=/etc/apt/keyrings/nginx-archive-keyring.gpg; \
+    dpkgArch="$(dpkg --print-architecture)" \
+    && nginxPackages="%%PACKAGES%%
+    " \
+    && case "$dpkgArch" in \
+        amd64|arm64) \
+# arches officially built by upstream
+            echo "deb [signed-by=$NGINX_GPGKEY_PATH] %%PACKAGEREPO%% %%DEBIAN_VERSION%% nginx" >> /etc/apt/sources.list.d/nginx.list \
+            && apt-get update \
+            ;; \
+        *) \
+# we're on an architecture upstream doesn't officially build for
+# let's build binaries from the published packaging sources
+# new directory for storing sources and .deb files
+            tempDir="$(mktemp -d)" \
+            && chmod 777 "$tempDir" \
+# (777 to ensure APT's "_apt" user can access it too)
+            \
+# save list of currently-installed packages so build dependencies can be cleanly removed later
+            && savedAptMark="$(apt-mark showmanual)" \
+            \
+# build .deb files from upstream's packaging sources
+            && apt-get update \
+            && apt-get install --no-install-recommends --no-install-suggests -y \
+                curl \
+                devscripts \
+                equivs \
+                git \
+                libxml2-utils \
+                lsb-release \
+                xsltproc \
+            && ( \
+                cd "$tempDir" \
+                && REVISION="%%REVISION%%" \
+                && REVISION=${REVISION%~*} \
+                && curl -f -L -O https://github.com/nginx/pkg-oss/archive/${REVISION}.tar.gz \
+                && PKGOSSCHECKSUM="%%PKGOSSCHECKSUM%% *${REVISION}.tar.gz" \
+                && if [ "$(openssl sha512 -r ${REVISION}.tar.gz)" = "$PKGOSSCHECKSUM" ]; then \
+                    echo "pkg-oss tarball checksum verification succeeded!"; \
+                else \
+                    echo "pkg-oss tarball checksum verification failed!"; \
+                    exit 1; \
+                fi \
+                && tar xzvf ${REVISION}.tar.gz \
+                && cd pkg-oss-${REVISION} \
+                && cd debian \
+                && for target in %%BUILDTARGET%%; do \
+                    make rules-$target; \
+                    mk-build-deps --install --tool="apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes" \
+                        debuild-$target/nginx-$NGINX_VERSION/debian/control; \
+                done \
+                && make %%BUILDTARGET%% \
+            ) \
+# we don't remove APT lists here because they get re-downloaded and removed later
+            \
+# reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
+# (which is done after we install the built packages so we don't have to redownload any overlapping dependencies)
+            && apt-mark showmanual | xargs apt-mark auto > /dev/null \
+            && { [ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; } \
+            \
+# create a temporary local APT repo to install from (so that dependency resolution can be handled by APT, as it should be)
+            && ls -lAFh "$tempDir" \
+            && ( cd "$tempDir" && dpkg-scanpackages . > Packages ) \
+            && grep '^Package: ' "$tempDir/Packages" \
+            && echo "deb [ trusted=yes ] file://$tempDir ./" > /etc/apt/sources.list.d/temp.list \
+# work around the following APT issue by using "Acquire::GzipIndexes=false" (overriding "/etc/apt/apt.conf.d/docker-gzip-indexes")
+#   Could not open file /var/lib/apt/lists/partial/_tmp_tmp.ODWljpQfkE_._Packages - open (13: Permission denied)
+#   ...
+#   E: Failed to fetch store:/var/lib/apt/lists/partial/_tmp_tmp.ODWljpQfkE_._Packages  Could not open file /var/lib/apt/lists/partial/_tmp_tmp.ODWljpQfkE_._Packages - open (13: Permission denied)
+            && apt-get -o Acquire::GzipIndexes=false update \
+            ;; \
+    esac \
+    \
+    && apt-get install --no-install-recommends --no-install-suggests -y \
+                        $nginxPackages \
+                        gettext-base \
+                        curl \
+    && apt-get remove --purge --auto-remove -y && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list \
+    \
+# if we have leftovers from building, let's purge them (including extra, unnecessary build deps)
+    && if [ -n "$tempDir" ]; then \
+        apt-get purge -y --auto-remove \
+        && rm -rf "$tempDir" /etc/apt/sources.list.d/temp.list; \
+    fi
+
+USER $UID
