@@ -62,7 +62,7 @@ for version in "${versions[@]}"; do
     alpine_otel="alpine-otel"
 	commit="$(dirCommit "$target/$version/$base")"
 
-	fullVersion="$(git show "$commit":"$target/$version/$base/Dockerfile" | awk '$1 == "ENV" && $2 == "NGINX_VERSION" { print $3; exit }')"
+	fullVersion="$(git show "$commit":"$target/$version/$base/Dockerfile" | awk -F' |=| +' '$1 == "ENV" && $2 == "NGINX_VERSION" { print $3; exit }')"
 
 	versionAliases=( $fullVersion )
 	if [ "$version" != "$fullVersion" ]; then
@@ -70,7 +70,7 @@ for version in "${versions[@]}"; do
 	fi
 	versionAliases+=( ${aliases[$version]:-} )
 
-	debianVersion="$(git show "$commit":"$target/$version/$base/Dockerfile" | awk -F"[-:]" '$1 == "FROM debian" { print $2; exit }')"
+	debianVersion="$(git show "$commit":"$target/$version/$base/Dockerfile" | awk -F"[-:]" '$1 ~ /^FROM debian|^ARG IMAGE=debian/ { print $2; exit }')"
 	debianAliases=( ${versionAliases[@]/%/-$debianVersion} )
 	debianAliases=( "${debianAliases[@]//latest-/}" )
 
@@ -116,7 +116,7 @@ for version in "${versions[@]}"; do
 
 
 	commit="$(dirCommit "$target/$version/alpine-slim")"
-	alpineVersion="$(git show "$commit":"$target/$version/alpine-slim/Dockerfile" | awk -F: '$1 == "FROM alpine" { print $2; exit }')"
+	alpineVersion="$(git show "$commit":"$target/$version/alpine-slim/Dockerfile" | awk -F: '$1 ~ /^FROM alpine|^ARG IMAGE=alpine/ { print $2; exit }')"
 
 	for variant in alpine alpine-perl alpine-slim; do
 		commit="$(dirCommit "$target/$version/$variant")"
