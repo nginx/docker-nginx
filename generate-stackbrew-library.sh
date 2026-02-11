@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 
 [ -z "${GENERATE_STACKBREW_LIBRARY_TARGET:-}" ] && target="library" || target="$GENERATE_STACKBREW_LIBRARY_TARGET"
