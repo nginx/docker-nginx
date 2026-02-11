@@ -213,17 +213,18 @@ generated_warning() {
 __EOF__
 }
 
+for target in library unprivileged; do
 for branch in "${branches[@]}"; do
     for variant in \
         alpine{,-perl,-otel,-slim} \
         debian{,-perl,-otel}; do
-        echo "$branch: $variant dockerfiles"
-        dir="$branch/$variant"
+        echo "$target $branch: $variant dockerfiles"
+        dir="$target/$branch/$variant"
         variant="$(basename "$variant")"
 
-        [ -d "$dir" ] || continue
+        mkdir -p "$dir"
 
-        template="Dockerfile-${variant}.template"
+        template="templates/${target}/Dockerfile-${variant}.template"
         {
             generated_warning
             cat "$template"
@@ -267,9 +268,10 @@ for branch in "${branches[@]}"; do
     for variant in \
         alpine-slim \
         debian; do \
-        echo "$branch: $variant entrypoint scripts"
-        dir="$branch/$variant"
-        cp -a entrypoint/*.sh "$dir/"
-        cp -a entrypoint/*.envsh "$dir/"
+        echo "$target $branch: $variant entrypoint scripts"
+        dir="$target/$branch/$variant"
+        cp -a entrypoint/$target/*.sh "$dir/"
+        cp -a entrypoint/$target/*.envsh "$dir/"
     done
+done
 done
