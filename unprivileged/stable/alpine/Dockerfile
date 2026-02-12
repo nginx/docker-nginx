@@ -8,6 +8,7 @@ FROM $IMAGE
 
 ENV NJS_VERSION=0.9.5
 ENV NJS_RELEASE=1
+ENV ACME_VERSION=0.3.1
 
 ARG UID=101
 ARG GID=101
@@ -54,6 +55,8 @@ RUN set -x \
                 alpine-sdk \
                 findutils \
                 curl \
+                cargo \
+                clang-libclang \
             && su nobody -s /bin/sh -c " \
                 export HOME=${tempDir} \
                 && cd ${tempDir} \

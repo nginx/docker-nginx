@@ -11,6 +11,7 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 ENV NGINX_VERSION=1.28.2
 ENV NJS_VERSION=0.9.5
 ENV NJS_RELEASE=1~trixie
+ENV ACME_VERSION=0.3.1
 ENV PKG_RELEASE=1~trixie
 ENV DYNPKG_RELEASE=1~trixie
 
@@ -70,6 +71,7 @@ RUN set -x \
 # build .deb files from upstream's packaging sources
             && apt-get update \
             && apt-get install --no-install-recommends --no-install-suggests -y \
+                cargo \
                 curl \
                 devscripts \
                 equivs \
@@ -79,6 +81,7 @@ RUN set -x \
                 xsltproc \
             && ( \
                 cd "$tempDir" \
+                && export CARGO_HOME="$tempDir/.cargo" \
                 && REVISION="${NGINX_VERSION}-${PKG_RELEASE}" \
                 && REVISION=${REVISION%~*} \
                 && curl -f -L -O https://github.com/nginx/pkg-oss/archive/${REVISION}.tar.gz \
