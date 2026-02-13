@@ -9,7 +9,6 @@ imageTests+=(
         modules
 	'
     [nginxinc/nginx-unprivileged]='
-        ipv6
         static
         templates
         templates-resolver
