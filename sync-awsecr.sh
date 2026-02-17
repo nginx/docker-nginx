@@ -167,17 +167,11 @@ done
 done
 
 echo
-echo "# manifesting stuff"
+echo "# manifesting and pushing stuff"
 for tag in ${pulllist[@]} ${!taglist[@]}; do
-    string="docker manifest create --amend $registry/$tag"
+    string="docker buildx imagetools create --progress=plain -t --amend $registry/$tag"
     for arch in ${architectures[@]}; do
         string+=" $registry/$tag-$arch"
     done
     echo $string
-done
-
-echo
-echo "# pushing manifests"
-for tag in ${pulllist[@]} ${!taglist[@]}; do
-    echo "docker manifest push --purge $registry/$tag"
 done
