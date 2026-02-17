@@ -55,7 +55,7 @@ for version in "${versions[@]}"; do
     commit="$(dirCommit "$version/$base")"
     fullVersion="$(git show "$commit":"$version/$base/Dockerfile" | awk '$1 == "ENV" && $2 == "NGINX_VERSION" { print $3; exit }')"
     pulllist+=( "$image:$fullVersion" )
-    for variant in perl alpine alpine-perl alpine-slim; do
+    for variant in otel perl alpine alpine-otel alpine-perl alpine-slim; do
         pulllist+=( "$image:$fullVersion-$variant" )
     done
 done
@@ -91,10 +91,22 @@ for version in "${versions[@]}"; do
         done
     done
 
+    for variant in debian-otel; do
+        variantAliases=( "${versionAliases[@]/%/-otel}" )
+        variantAliases+=( "${versionAliases[@]/%/-${variant/debian/$debianVersion}}" )
+        variantAliases=( "${variantAliases[@]//latest-/}" )
+
+        for tag in ${variantAliases[@]}; do
+        if [ "$tag" != "${fullVersion}-otel" ]; then
+            taglist["$image:$tag"]="$image:$fullVersion-otel"
+        fi
+        done
+    done
+
     commit="$(dirCommit "$version/alpine-slim")"
     alpineVersion="$(git show "$commit":"$version/alpine-slim/Dockerfile" | awk -F: '$1 == "FROM alpine" { print $2; exit }')"
 
-    for variant in alpine alpine-perl alpine-slim; do
+    for variant in alpine alpine-otel alpine-perl alpine-slim; do
         commit="$(dirCommit "$version/$variant")"
 
         variantAliases=( "${versionAliases[@]/%/-$variant}" )
