@@ -12,6 +12,7 @@ defaults:
 jobs:
   sync-awsecr:
     name: Sync Docker Hub to AWS ECR Public
+    if: ${{ github.repository == 'nginx/docker-nginx' }}
     runs-on: ubuntu-24.04
     permissions:
       id-token: write
