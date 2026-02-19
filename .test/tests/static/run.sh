@@ -8,6 +8,9 @@ dir="$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 image="$1"
 
+port=80
+if echo "$image" | grep -q "unprivileged"; then port=8080; fi
+
 clientImage='buildpack-deps:buster-curl'
 # ensure the clientImage is ready and available
 if ! docker image inspect "$clientImage" &> /dev/null; then
@@ -37,7 +40,7 @@ _request() {
 	docker run --rm \
 		--link "$cid":nginx \
 		"$clientImage" \
-		curl -fsSL -X"$method" --connect-to '::nginx:' "$@" "$proto://example.com/$url"
+		curl -fsSL -X"$method" --connect-to "::nginx:$port" "$@" "$proto://example.com/$url"
 }
 
 . "$HOME/oi/test/retry.sh" '[ "$(_request GET / --output /dev/null || echo $?)" != 7 ]'

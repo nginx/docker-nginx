@@ -1,5 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
+
+[ -z "${GENERATE_STACKBREW_LIBRARY_TARGET:-}" ] && target="library" || target="$GENERATE_STACKBREW_LIBRARY_TARGET"
 
 declare -A aliases
 aliases=(
@@ -58,9 +60,9 @@ join() {
 for version in "${versions[@]}"; do
     debian_otel="debian-otel"
     alpine_otel="alpine-otel"
-	commit="$(dirCommit "$version/$base")"
+	commit="$(dirCommit "$target/$version/$base")"
 
-	fullVersion="$(git show "$commit":"$version/$base/Dockerfile" | awk '$1 == "ENV" && $2 == "NGINX_VERSION" { print $3; exit }')"
+	fullVersion="$(git show "$commit":"$target/$version/$base/Dockerfile" | awk -F' |=| +' '$1 == "ENV" && $2 == "NGINX_VERSION" { print $3; exit }')"
 
 	versionAliases=( $fullVersion )
 	if [ "$version" != "$fullVersion" ]; then
@@ -68,7 +70,7 @@ for version in "${versions[@]}"; do
 	fi
 	versionAliases+=( ${aliases[$version]:-} )
 
-	debianVersion="$(git show "$commit":"$version/$base/Dockerfile" | awk -F"[-:]" '$1 == "FROM debian" { print $2; exit }')"
+	debianVersion="$(git show "$commit":"$target/$version/$base/Dockerfile" | awk -F"[-:]" '$1 ~ /^FROM debian|^ARG IMAGE=debian/ { print $2; exit }')"
 	debianAliases=( ${versionAliases[@]/%/-$debianVersion} )
 	debianAliases=( "${debianAliases[@]//latest-/}" )
 
@@ -77,11 +79,11 @@ for version in "${versions[@]}"; do
 		Tags: $(join ', ' "${versionAliases[@]}"), $(join ', ' "${debianAliases[@]}")
 		Architectures: ${debian_architectures[$version]}
 		GitCommit: $commit
-		Directory: $version/$base
+		Directory: $target/$version/$base
 	EOE
 
 	for variant in debian-perl; do
-		commit="$(dirCommit "$version/$variant")"
+		commit="$(dirCommit "$target/$version/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-perl}" )
 		variantAliases+=( "${versionAliases[@]/%/-${variant/debian/$debianVersion}}" )
@@ -92,12 +94,12 @@ for version in "${versions[@]}"; do
 			Tags: $(join ', ' "${variantAliases[@]}")
 			Architectures: ${debian_architectures[$version]}
 			GitCommit: $commit
-			Directory: $version/$variant
+			Directory: $target/$version/$variant
 		EOE
 	done
 
 	for variant in $debian_otel; do
-		commit="$(dirCommit "$version/$variant")"
+		commit="$(dirCommit "$target/$version/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-otel}" )
 		variantAliases+=( "${versionAliases[@]/%/-${variant/debian/$debianVersion}}" )
@@ -108,16 +110,16 @@ for version in "${versions[@]}"; do
 			Tags: $(join ', ' "${variantAliases[@]}")
 			Architectures: amd64, arm64v8
 			GitCommit: $commit
-			Directory: $version/$variant
+			Directory: $target/$version/$variant
 		EOE
 	done
 
 
-	commit="$(dirCommit "$version/alpine-slim")"
-	alpineVersion="$(git show "$commit":"$version/alpine-slim/Dockerfile" | awk -F: '$1 == "FROM alpine" { print $2; exit }')"
+	commit="$(dirCommit "$target/$version/alpine-slim")"
+	alpineVersion="$(git show "$commit":"$target/$version/alpine-slim/Dockerfile" | awk -F: '$1 ~ /^FROM alpine|^ARG IMAGE=alpine/ { print $2; exit }')"
 
 	for variant in alpine alpine-perl alpine-slim; do
-		commit="$(dirCommit "$version/$variant")"
+		commit="$(dirCommit "$target/$version/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-$variant}" )
 		variantAliases+=( "${versionAliases[@]/%/-${variant/alpine/alpine$alpineVersion}}" )
@@ -128,12 +130,12 @@ for version in "${versions[@]}"; do
 			Tags: $(join ', ' "${variantAliases[@]}")
 			Architectures: arm64v8, arm32v6, arm32v7, ppc64le, s390x, i386, amd64, riscv64
 			GitCommit: $commit
-			Directory: $version/$variant
+			Directory: $target/$version/$variant
 		EOE
 	done
 
 	for variant in $alpine_otel; do
-		commit="$(dirCommit "$version/$variant")"
+		commit="$(dirCommit "$target/$version/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-$variant}" )
 		variantAliases+=( "${versionAliases[@]/%/-${variant/alpine/alpine$alpineVersion}}" )
@@ -144,7 +146,7 @@ for version in "${versions[@]}"; do
 			Tags: $(join ', ' "${variantAliases[@]}")
 			Architectures: amd64, arm64v8
 			GitCommit: $commit
-			Directory: $version/$variant
+			Directory: $target/$version/$variant
 		EOE
 	done
 

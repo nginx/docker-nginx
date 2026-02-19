@@ -8,4 +8,11 @@ imageTests+=(
         workers
         modules
 	'
+    [nginxinc/nginx-unprivileged]='
+        static
+        templates
+        templates-resolver
+        templates-resolver-ipv6
+        workers
+    '
 )

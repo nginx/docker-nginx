@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 
 image="nginx"
@@ -52,8 +52,8 @@ join() {
 }
 
 for version in "${versions[@]}"; do
-	commit="$(dirCommit "$version/$base")"
-	fullVersion="$(git show "$commit":"$version/$base/Dockerfile" | awk '$1 == "ENV" && $2 == "NGINX_VERSION" { print $3; exit }')"
+	commit="$(dirCommit "library/$version/$base")"
+	fullVersion="$(git show "$commit":"library/$version/$base/Dockerfile" | awk '$1 == "ENV" && $2 == "NGINX_VERSION" { print $3; exit }')"
     pulllist+=( "$image:$fullVersion" )
     for variant in perl alpine alpine-perl alpine-slim; do
         pulllist+=( "$image:$fullVersion-$variant" )
@@ -61,9 +61,9 @@ for version in "${versions[@]}"; do
 done
 
 for version in "${versions[@]}"; do
-	commit="$(dirCommit "$version/$base")"
+	commit="$(dirCommit "library/$version/$base")"
 
-	fullVersion="$(git show "$commit":"$version/$base/Dockerfile" | awk '$1 == "ENV" && $2 == "NGINX_VERSION" { print $3; exit }')"
+	fullVersion="$(git show "$commit":"library/$version/$base/Dockerfile" | awk '$1 == "ENV" && $2 == "NGINX_VERSION" { print $3; exit }')"
 
 	versionAliases=( $fullVersion )
 	if [ "$version" != "$fullVersion" ]; then
@@ -71,7 +71,7 @@ for version in "${versions[@]}"; do
 	fi
 	versionAliases+=( ${aliases[$version]:-} )
 
-	debianVersion="$(git show "$commit":"$version/$base/Dockerfile" | awk -F"[-:]" '$1 == "FROM debian" { print $2; exit }')"
+	debianVersion="$(git show "$commit":"library/$version/$base/Dockerfile" | awk -F"[-:]" '$1 == "FROM debian" { print $2; exit }')"
 	debianAliases=( ${versionAliases[@]/%/-$debianVersion} )
 	debianAliases=( "${debianAliases[@]//latest-/}" )
 
@@ -91,11 +91,11 @@ for version in "${versions[@]}"; do
         done
 	done
 
-    commit="$(dirCommit "$version/alpine-slim")"
-    alpineVersion="$(git show "$commit":"$version/alpine-slim/Dockerfile" | awk -F: '$1 == "FROM alpine" { print $2; exit }')"
+    commit="$(dirCommit "library/$version/alpine-slim")"
+    alpineVersion="$(git show "$commit":"library/$version/alpine-slim/Dockerfile" | awk -F: '$1 == "FROM alpine" { print $2; exit }')"
 
 	for variant in alpine alpine-perl alpine-slim; do
-		commit="$(dirCommit "$version/$variant")"
+		commit="$(dirCommit "library/$version/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-$variant}" )
 		variantAliases+=( "${versionAliases[@]/%/-${variant/alpine/alpine$alpineVersion}}" )
