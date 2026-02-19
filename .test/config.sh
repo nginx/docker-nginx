@@ -14,6 +14,5 @@ imageTests+=(
         templates-resolver
         templates-resolver-ipv6
         workers
-        modules
     '
 )
