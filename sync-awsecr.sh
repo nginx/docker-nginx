@@ -169,7 +169,7 @@ done
 echo
 echo "# manifesting and pushing stuff"
 for tag in ${pulllist[@]} ${!taglist[@]}; do
-    string="docker buildx imagetools create --progress=plain -t --amend $registry/$tag"
+    string="docker buildx imagetools create --progress=plain -t $registry/$tag"
     for arch in ${architectures[@]}; do
         string+=" $registry/$tag-$arch"
     done
