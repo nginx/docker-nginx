@@ -5,6 +5,7 @@ imageTests+=(
         templates-http
         templates-resolver
         templates-resolver-ipv6
+        templates-stream
         workers
         modules
 	'
