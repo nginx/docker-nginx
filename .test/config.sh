@@ -2,7 +2,7 @@ imageTests+=(
 	[nginx]='
         ipv6
         static
-        templates
+        templates-http
         templates-resolver
         templates-resolver-ipv6
         workers
