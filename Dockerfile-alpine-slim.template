@@ -29,7 +29,11 @@ RUN set -x \
                 echo "key verification failed!"; \
                 exit 1; \
             fi \
-            && apk add -X "%%PACKAGEREPO%%v$(egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release)/main" --no-cache $nginxPackages \
+            && apk add --no-cache \
+                $(apk query --summarize depends --recursive --no-cache \
+                   --repository "@nginxorg %%PACKAGEREPO%%v$(egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release)/main" \
+                   ${nginxPackages/=/@nginxorg=}) \
+            && apk add --repositories-file /dev/null -X "%%PACKAGEREPO%%v$(egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release)/main" --no-cache $nginxPackages \
             ;; \
         *) \
 # we're on an architecture upstream doesn't officially build for
@@ -69,7 +73,11 @@ RUN set -x \
                 " \
             && cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/ \
             && apk del --no-network .build-deps \
-            && apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages \
+            && apk add --no-cache \
+                $(apk query --summarize depends --recursive --no-cache \
+                   --repository "@nginxorg ${tempDir}/packages/alpine/" \
+                   ${nginxPackages/=/@nginxorg=}) \
+            && apk add --repositories-file /dev/null -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages \
             ;; \
     esac \
 # remove checksum deps
