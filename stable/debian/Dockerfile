@@ -10,7 +10,7 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 ENV NGINX_VERSION   1.30.0
 ENV NJS_VERSION     0.9.6
 ENV NJS_RELEASE     1~trixie
-ENV ACME_VERSION    0.3.1
+ENV ACME_VERSION    0.4.1
 ENV PKG_RELEASE     1~trixie
 ENV DYNPKG_RELEASE  1~trixie
 

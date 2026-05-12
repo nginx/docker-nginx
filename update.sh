@@ -37,8 +37,8 @@ declare -A otel=(
 
 # Current acme versions
 declare -A acme=(
-    [mainline]='0.3.1'
-    [stable]='0.3.1'
+    [mainline]='0.4.1'
+    [stable]='0.4.1'
 )
 
 # Current nginx package patchlevel version
