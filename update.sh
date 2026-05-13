@@ -12,14 +12,14 @@ declare branches=(
 # Current nginx versions
 # Remember to update pkgosschecksum when changing this.
 declare -A nginx=(
-    [mainline]='1.29.8'
-    [stable]='1.30.0'
+    [mainline]='1.31.0'
+    [stable]='1.30.1'
 )
 
 # Current njs versions
 declare -A njs=(
-    [mainline]='0.9.6'
-    [stable]='0.9.6'
+    [mainline]='0.9.8'
+    [stable]='0.9.8'
 )
 
 # Current njs patchlevel version
@@ -78,8 +78,8 @@ declare -A rev=(
 # revision/tag in the previous block
 # Used in builds for architectures not packaged by nginx.org
 declare -A pkgosschecksum=(
-    [mainline]='7074c3ba1ece708140afd0220b16df77651fbb56cc012e901bc1c4a80531872b7a58ad97a28357646575ce625e94a0540796c045f95d33e40e6d3874ce7b3d79'
-    [stable]='a090f4aecd628ab4b4124376efa55f617a272f9bae4e306df9b659b1b850133b0806cac31fb2a72faf1cc36bde8f5a19f4f5da5fd73502d3bbe374697920344e'
+    [mainline]='7c1dddf7d510642b6f352a16e4c8d7696c791a042cf9758282498d8bc8ae0760263874fbcbbadc420129b15701b32c50cebdc432ad9d2adb9776600b42cfb149'
+    [stable]='05e338105684bf659770c24af35264a25e6d02d4b850c3fb21091dd0815284ab567a0ae03a7756fb4ea94520a7a4057c1bd8967d62cf2fc4cf1fc11d424b56ba'
 )
 
 get_packages() {
