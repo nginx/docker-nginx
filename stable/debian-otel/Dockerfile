@@ -3,7 +3,7 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM nginx:1.30.1
+FROM nginx:1.30.2
 
 ENV OTEL_VERSION     0.1.2
 
@@ -48,10 +48,10 @@ RUN set -x; \
                 xsltproc \
             && ( \
                 cd "$tempDir" \
-                && REVISION="3fdb8a9a864e5680a1d432aab681e40b7e269bb4" \
+                && REVISION="60789259bfab36b1669a414881a9d002fd246d6b" \
                 && REVISION=${REVISION%~*} \
                 && curl -f -L -O https://github.com/nginx/pkg-oss/archive/${REVISION}.tar.gz \
-                && PKGOSSCHECKSUM="83a117b77bf3f1ce7f227b75712766c1dec6bcfae0f1f87a9d522d1ef9b66a8ca550c3c0835b82e74e1242284be65126a1858a4fabd1dc9969ce8a7fd8e4681b *${REVISION}.tar.gz" \
+                && PKGOSSCHECKSUM="9282a0265c921af3e2d5760cbdc06aae65e6efb145ed266fe02102326174a9e9405f6492979372556c14e2f4f8cf66a48c338d054d0ece375a1c41f343f244cc *${REVISION}.tar.gz" \
                 && if [ "$(openssl sha512 -r ${REVISION}.tar.gz)" = "$PKGOSSCHECKSUM" ]; then \
                     echo "pkg-oss tarball checksum verification succeeded!"; \
                 else \
