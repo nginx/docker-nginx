@@ -68,6 +68,9 @@ declare -A alpine=(
 # When we bump njs version in a stable release we don't move the tag in the
 # pkg-oss repo.  This setting allows us to specify a revision to check out
 # when building packages on architectures not supported by nginx.org
+# When doing an nginx release, it's best to use tags:
+#     [mainline]='${NGINX_VERSION}-${PKG_RELEASE}'
+#     [stable]='${NGINX_VERSION}-${PKG_RELEASE}'
 # Remember to update pkgosschecksum when changing this.
 declare -A rev=(
     [mainline]='b151aac903a6fc121d57f0909415381d0a1c1bbd'
