@@ -3,7 +3,6 @@ worker_processes  auto;
 
 load_module modules/ndk_http_module.so;
 load_module modules/ngx_http_echo_module.so;
-load_module modules/ngx_http_set_misc_module.so;
 
 error_log  /var/log/nginx/error.log notice;
 pid        /var/run/nginx.pid;
@@ -26,9 +25,8 @@ http {
         listen 80 default_server;
         location /hello {
             set $raw "hello";
-            set_sha1 $digest $raw;
 
-            echo $digest;
+            echo $raw;
         }
     }
 }
