@@ -7,7 +7,7 @@ FROM debian:trixie-slim
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION   1.30.4
+ENV NGINX_VERSION   1.30.5
 ENV NJS_VERSION     1.0.1
 ENV NJS_RELEASE     1~trixie
 ENV ACME_VERSION    0.4.1
@@ -78,10 +78,10 @@ RUN set -x \
             && ( \
                 cd "$tempDir" \
                 && export CARGO_HOME="$tempDir/.cargo" \
-                && REVISION="a8a4da8b4916b7adc193d3694cddeb4e6d771e8f" \
+                && REVISION="${NGINX_VERSION}-${PKG_RELEASE}" \
                 && REVISION=${REVISION%~*} \
                 && curl -f -L -O https://github.com/nginx/pkg-oss/archive/${REVISION}.tar.gz \
-                && PKGOSSCHECKSUM="53182fa1aa214ed690c8729695e9f6cad71489efa99b016e57314a29b9f0f3f42082819977dfc5569d800d693c9849fc1b48719fa35692e88de9807e6ab6e976 *${REVISION}.tar.gz" \
+                && PKGOSSCHECKSUM="feaa7c9e587e59a01e229c2396433a9f0bccd6ce381afae9311b7496d1c2b53f93b2b0b2adece8f76fa06b92ca6b6a706103ef2c0a26e00afe82dfcdf8135a23 *${REVISION}.tar.gz" \
                 && if [ "$(openssl sha512 -r ${REVISION}.tar.gz)" = "$PKGOSSCHECKSUM" ]; then \
                     echo "pkg-oss tarball checksum verification succeeded!"; \
                 else \
