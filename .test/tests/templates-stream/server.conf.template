@@ -1,0 +1,4 @@
+server {
+    listen 80;
+    return "${NGINX_MY_SERVER_NAME} - OK\n";
+}
