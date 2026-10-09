@@ -100,6 +100,11 @@ RUN set -x \
 # forward request and error logs to docker log collector
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log \
+# Ensure we can run our entrypoint and make it debian compatible
+    && apk add --no-cache tini \
+    && ln -s /sbin/tini /usr/bin/tini \
+# Add support for manually monitoring files to trigger server reloads
+    && apk add --no-cache inotify-tools \
 # create a docker-entrypoint.d directory
     && mkdir /docker-entrypoint.d
 
