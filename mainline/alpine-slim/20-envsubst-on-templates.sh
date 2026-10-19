@@ -63,7 +63,8 @@ auto_envsubst() {
   local stream_output_dir="${NGINX_ENVSUBST_STREAM_OUTPUT_DIR:-/etc/nginx/stream-conf.d}"
   local filter="${NGINX_ENVSUBST_FILTER:-}"
 
-  local defined_envs=$(printf '${%s} ' $(awk "END { for (name in ENVIRON) { print ( name ~ /${filter}/ ) ? name : \"\" } }" < /dev/null ))
+  local template defined_envs relative_path output_path subdir
+  defined_envs=$(printf '${%s} ' $(awk -v filter="$filter" 'END { for (name in ENVIRON) { print ( name ~ filter ) ? name : "" } }' < /dev/null))
   [ -d "$template_dir" ] || return 0
   ensure_output_writable "$output_dir"
   write_template_conf "$suffix" "$output_dir"

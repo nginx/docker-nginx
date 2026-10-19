@@ -20,10 +20,19 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
+      - name: Get secrets from Azure
+        uses: nginx/ci-self-hosted/.github/actions/get-from-vault@5c3e1f8b51f66a851fdba80f70e19cf966199730
+        with:
+          client-id: ${{secrets.NGINX_OSS_CLIENT_ID}}
+          tenant-id: ${{secrets.NGINX_OSS_TENANT_ID}}
+          vault-name: ${{secrets.NGINX_OSS_VAULT_NAME}}
+          secret-names: "github-docker-nginx-public-ecr-aws-role"
+          env-names: "AWS_ROLE_PUBLIC_ECR"
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_PUBLIC_ECR }}
+          role-to-assume: ${{ env.AWS_ROLE_PUBLIC_ECR }}
           aws-region: us-east-1
 
       - name: Login to Amazon ECR Public
@@ -32,11 +41,20 @@ jobs:
         with:
           registry-type: public
 
+      - name: Get secrets from Azure
+        uses: nginx/ci-self-hosted/.github/actions/get-from-vault@5c3e1f8b51f66a851fdba80f70e19cf966199730
+        with:
+          client-id: ${{secrets.NGINX_OSS_CLIENT_ID}}
+          tenant-id: ${{secrets.NGINX_OSS_TENANT_ID}}
+          vault-name: ${{secrets.NGINX_COMMON_VAULT_NAME}}
+          secret-names: "docker-username, docker-ro-token"
+          env-names: "DOCKERHUB_USERNAME, DOCKERHUB_TOKEN"
+
       - name: Login to Docker Hub
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_TOKEN }}
 
       - name: Build, tag, and push docker image to Amazon ECR Public
         run: |

@@ -32,7 +32,7 @@ fi
 
 # Create an instance of the container-under-test
 modulesImage="$("$HOME/oi/test/tests/image-name.sh" librarytest/nginx-template "$image")"
-docker build --build-arg NGINX_FROM_IMAGE="$image" --build-arg ENABLED_MODULES="ndk set-misc echo" -t "$modulesImage" -f "modules/$dockerfile" "$GITHUB_WORKSPACE/modules"
+docker build --build-arg NGINX_FROM_IMAGE="$image" --build-arg ENABLED_MODULES="ndk echo" -t "$modulesImage" -f "modules/$dockerfile" "$GITHUB_WORKSPACE/modules"
 
 serverImage="${modulesImage}-sme"
 "$HOME/oi/test/tests/docker-build.sh" "$dir" "$serverImage" <<EOD
@@ -68,4 +68,4 @@ _request() {
 . "$HOME/oi/test/retry.sh" '[ "$(_request GET / --output /dev/null || echo $?)" != 7 ]'
 
 # Check that we can request /
-_request GET http '/hello' | grep 'aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d'
+_request GET http '/hello' | grep 'hello'

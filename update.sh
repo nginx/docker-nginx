@@ -12,14 +12,14 @@ declare branches=(
 # Current nginx versions
 # Remember to update pkgosschecksum when changing this.
 declare -A nginx=(
-    [mainline]='1.29.8'
-    [stable]='1.28.3'
+    [mainline]='1.31.7'
+    [stable]='1.30.6'
 )
 
 # Current njs versions
 declare -A njs=(
-    [mainline]='0.9.6'
-    [stable]='0.9.6'
+    [mainline]='1.0.2'
+    [stable]='1.0.2'
 )
 
 # Current njs patchlevel version
@@ -37,8 +37,8 @@ declare -A otel=(
 
 # Current acme versions
 declare -A acme=(
-    [mainline]='0.3.1'
-    [stable]='0.3.1'
+    [mainline]='0.4.1'
+    [stable]='0.4.1'
 )
 
 # Current nginx package patchlevel version
@@ -61,13 +61,16 @@ declare -A debian=(
 )
 
 declare -A alpine=(
-    [mainline]='3.23'
-    [stable]='3.23'
+    [mainline]='3.24'
+    [stable]='3.24'
 )
 
 # When we bump njs version in a stable release we don't move the tag in the
 # pkg-oss repo.  This setting allows us to specify a revision to check out
 # when building packages on architectures not supported by nginx.org
+# When doing an nginx release, it's best to use tags:
+#     [mainline]='${NGINX_VERSION}-${PKG_RELEASE}'
+#     [stable]='${NGINX_VERSION}-${PKG_RELEASE}'
 # Remember to update pkgosschecksum when changing this.
 declare -A rev=(
     [mainline]='${NGINX_VERSION}-${PKG_RELEASE}'
@@ -78,8 +81,8 @@ declare -A rev=(
 # revision/tag in the previous block
 # Used in builds for architectures not packaged by nginx.org
 declare -A pkgosschecksum=(
-    [mainline]='7074c3ba1ece708140afd0220b16df77651fbb56cc012e901bc1c4a80531872b7a58ad97a28357646575ce625e94a0540796c045f95d33e40e6d3874ce7b3d79'
-    [stable]='866d10a1091f34b6bd9e7dcae69653323fa98511a2b75104b54d97ef71416b9b96f10510149d9e85aa582b21b3cb5e43ea9c2b8d8f7cf0079452e8bea2c10db4'
+    [mainline]='572a673ad92851bb6deff13b93d4cef579a2c4f5fee807689f85e45b8d10d7499b10a413ffb16eafd2a8559117d56cdc5bed8910247e77b90342d7a045c6a186'
+    [stable]='c16280934a44f7358992d39bb1d876a58e978c58371b96fd212de3f58c7ba40c31a683c54ee46c85d0844ca18fd7addeafbb29a8e06a9d1e164a8628a4739eee'
 )
 
 get_packages() {

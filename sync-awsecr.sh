@@ -6,8 +6,8 @@ registry="public.ecr.aws/z9d2n7e1"
 
 declare -A aliases
 aliases=(
-    [mainline]='1 1.29 latest'
-    [stable]='1.28'
+    [mainline]='1 1.31 latest'
+    [stable]='1.30'
 )
 
 architectures=( amd64 arm64v8 )
