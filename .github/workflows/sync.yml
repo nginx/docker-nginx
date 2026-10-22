@@ -41,20 +41,12 @@ jobs:
         with:
           registry-type: public
 
-      - name: Get secrets from Azure
-        uses: nginx/ci-self-hosted/.github/actions/get-from-vault@5c3e1f8b51f66a851fdba80f70e19cf966199730
-        with:
-          client-id: ${{secrets.NGINX_OSS_CLIENT_ID}}
-          tenant-id: ${{secrets.NGINX_OSS_TENANT_ID}}
-          vault-name: ${{secrets.NGINX_COMMON_VAULT_NAME}}
-          secret-names: "docker-username, docker-ro-token"
-          env-names: "DOCKERHUB_USERNAME, DOCKERHUB_TOKEN"
-
       - name: Login to Docker Hub
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        env:
+          DOCKERHUB_OIDC_CONNECTIONID: c3b80ade-3526-4afa-8c3c-77fd12652739
         with:
-          username: ${{ env.DOCKERHUB_USERNAME }}
-          password: ${{ env.DOCKERHUB_TOKEN }}
+          username: nginx
 
       - name: Build, tag, and push docker image to Amazon ECR Public
         run: |
