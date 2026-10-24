@@ -1,0 +1,6 @@
+server_name server-name;
+auth_http http://127.0.0.1:9000/;
+server {
+    listen 25;
+    protocol smtp;
+}

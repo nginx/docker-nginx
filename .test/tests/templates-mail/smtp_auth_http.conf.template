@@ -1,0 +1,9 @@
+server {
+    listen 127.0.0.1:9000;
+    location / {
+        default_type text/plain;
+        add_header Auth-Status "Login not supported since this is a dummy nginx smtp handler";
+        add_header Auth-Error-Code "550 5.3.5";
+        return 200;
+    }
+}
