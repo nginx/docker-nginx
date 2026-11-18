@@ -12,8 +12,8 @@ declare branches=(
 # Current nginx versions
 # Remember to update pkgosschecksum when changing this.
 declare -A nginx=(
-    [mainline]='1.31.8'
-    [stable]='1.30.6'
+    [mainline]='1.31.9'
+    [stable]='1.30.7'
 )
 
 # Current njs versions
@@ -37,8 +37,8 @@ declare -A otel=(
 
 # Current acme versions
 declare -A acme=(
-    [mainline]='0.4.1'
-    [stable]='0.4.1'
+    [mainline]='0.4.2'
+    [stable]='0.4.2'
 )
 
 # Current nginx package patchlevel version
@@ -81,8 +81,8 @@ declare -A rev=(
 # revision/tag in the previous block
 # Used in builds for architectures not packaged by nginx.org
 declare -A pkgosschecksum=(
-    [mainline]='e5f00e946092f1e50144db1d26e52d43efb2bc2cbb93b3b5b468aaf78516afab169af9f21d115276c60de8bfc6da1615acc0d092cc99f7b0ed1abb182af56d0d'
-    [stable]='c16280934a44f7358992d39bb1d876a58e978c58371b96fd212de3f58c7ba40c31a683c54ee46c85d0844ca18fd7addeafbb29a8e06a9d1e164a8628a4739eee'
+    [mainline]='220da8433bf53265cf51abeaa0b6fdd9b6c77d16ee75340cb7bfd6412513d4d0a5b82e38bdf24a0343956906ea43748eb9c8615e917f6488915c7d6b69ccb8c0'
+    [stable]='ea7a8c2bac050f3def3dcab7c2c3078898288788c08ea48cc2009c001ff9ab45bf675cacbaed208f3234c8336421708ed3dec9d132ab6e27de9a74093237bb4e'
 )
 
 get_packages() {
