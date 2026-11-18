@@ -3,6 +3,7 @@ imageTests+=(
         ipv6
         static
         templates
+        templates-mail
         templates-resolver
         templates-resolver-ipv6
         workers
