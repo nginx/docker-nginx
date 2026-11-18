@@ -23,11 +23,11 @@ if [ ! -f "/$DEFAULT_CONF_FILE" ]; then
     exit 0
 fi
 
-# check if the file can be modified, e.g. not on a r/o filesystem
-touch /$DEFAULT_CONF_FILE 2>/dev/null || { entrypoint_log "$ME: info: can not modify /$DEFAULT_CONF_FILE (read-only file system?)"; exit 0; }
-
 # check if the file is already modified, e.g. on a container restart
 grep -q "listen  \[::\]:80;" /$DEFAULT_CONF_FILE && { entrypoint_log "$ME: info: IPv6 listen already enabled"; exit 0; }
+
+# check if the file can be modified, e.g. not on a r/o filesystem
+touch /$DEFAULT_CONF_FILE 2>/dev/null || { entrypoint_log "$ME: info: can not modify /$DEFAULT_CONF_FILE (read-only file system?)"; exit 0; }
 
 if [ -f "/etc/os-release" ]; then
     . /etc/os-release
