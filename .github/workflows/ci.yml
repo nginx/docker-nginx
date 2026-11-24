@@ -12,6 +12,14 @@ defaults:
 
 jobs:
 
+  test-entrypoint-ipv6:
+    name: Test IPv6 entrypoint with read-only config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+      - name: Verify an already-enabled IPv6 config needs no write access
+        run: ./tests/entrypoint-ipv6-readonly.sh
+
   generate-jobs:
     name: Generate Jobs
     runs-on: ubuntu-latest
